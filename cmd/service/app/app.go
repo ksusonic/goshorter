@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	ginzap "github.com/gin-contrib/zap"
+	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/repository"
 	"github.com/ksusonic/goshorter/internal/service/shortener"
@@ -23,17 +25,20 @@ const (
 
 func Run() {
 	var (
-		ctx    = context.Background()
-		cfg    = newConfig()
-		logger = log.Default()
+		ctx = context.Background()
+		cfg = newConfig()
+		log = newLogger()
 	)
 
 	repo, closer := repository.NewRepository(ctx, cfg.DatabaseDSN)
 	defer closer()
 
-	shortenerService := shortener.NewService(cfg.ShortURLPrefix, repo, logger)
+	shortenerService := shortener.NewService(cfg.ShortURLPrefix, repo, log)
 
 	r := setupRouter(shortenerService)
+
+	r.Use(ginzap.Ginzap(log, time.RFC3339, true))
+	r.Use(ginzap.RecoveryWithZap(log, true))
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
@@ -42,9 +47,11 @@ func Run() {
 		WriteTimeout: WriteTimeout,
 	}
 
+	log.Debug("starting server", zap.Int("port", cfg.Port))
+
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalf("listen: %s", err)
+			log.Fatal("listen and serve", zap.Error(err))
 		}
 	}()
 
@@ -52,13 +59,12 @@ func Run() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	<-quit
-	log.Println("Shutdown Server ...")
+	log.Info("shutting down server...", zap.Duration("timeout", stopTimeout))
 
 	ctx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Printf("srv.Shutdown: %+v", err)
-		return
+		log.Error("server forced to shutdown", zap.Error(err))
 	}
 }

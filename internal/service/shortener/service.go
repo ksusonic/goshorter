@@ -2,20 +2,21 @@ package shortener
 
 import (
 	"context"
-	"log"
+
+	"go.uber.org/zap"
 )
 
 type Service struct {
 	shortURLPrefix string
 
 	repo Repository
-	log  *log.Logger
+	log  *zap.Logger
 }
 
 func NewService(
 	shortURLPrefix string,
 	repo Repository,
-	log *log.Logger,
+	log *zap.Logger,
 ) *Service {
 	return &Service{
 		shortURLPrefix: shortURLPrefix,

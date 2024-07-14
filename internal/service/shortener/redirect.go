@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/models"
 )
@@ -27,7 +28,7 @@ func (s *Service) Redirect(c *gin.Context) {
 			return
 		}
 
-		s.log.Printf("repo.GetURLByHash: %+v", err)
+		s.log.Error("repo.GetURLByHash", zap.Error(err))
 		c.String(http.StatusInternalServerError, "internal server error")
 		return
 	}

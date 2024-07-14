@@ -5,6 +5,7 @@ import (
 	"net/url"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/utils"
 )
@@ -30,7 +31,7 @@ func (s *Service) Shorten(c *gin.Context) {
 
 	err = s.repo.SetURLByHash(c.Request.Context(), hash, request.URL)
 	if err != nil {
-		s.log.Printf("repo.SetURLByHash: %v", err)
+		s.log.Error("repo.SetURLByHash", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 		return
 	}
