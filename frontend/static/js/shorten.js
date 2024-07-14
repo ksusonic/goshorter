@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const data = await response.json();
-            resultDiv.innerHTML = `<a href="${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
+            resultDiv.innerHTML = `<a href="http://${data.shortened_url}" target="_blank">${data.shortened_url}</a>`;
         } catch (error) {
             resultDiv.textContent = `Ошибка: ${error.message}`;
         }
