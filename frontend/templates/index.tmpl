@@ -1,0 +1,16 @@
+{{ template "header.tmpl" . }}
+
+
+<form id="shorten-form">
+    <div>
+        <h2>Сократи свою ссылку:</h2>
+        <label for="url"></label>
+        <input type="text" name="url" id="url" placeholder="https://google.com">
+        <button type="submit" class="btn btn-primary">Сократить</button>
+    </div>
+    <div id="result"></div>
+</form>
+
+{{ template "footer.tmpl" . }}
+
+<script src="/static/js/shorten.js"></script>
