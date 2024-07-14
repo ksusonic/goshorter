@@ -9,7 +9,7 @@ import (
 type config struct {
 	DatabaseDSN    string `env:"DATABASE_DSN"`
 	Port           int    `env:"PORT" envDefault:"8080"`
-	ShortURLPrefix string `env:"SHORT_URL_PREFIX" envDefault:"http://localhost:8080/to/"`
+	ShortURLPrefix string `env:"SHORT_URL_PREFIX" envDefault:"http://localhost:8080/"`
 }
 
 func newConfig() (cfg config) {

@@ -10,8 +10,8 @@ import (
 
 const (
 	index  = "/"
+	toHash = "/:hash"
 	ping   = "/ping"
-	toHash = "/to/:hash"
 
 	apiShorten = "/api/shorten"
 )
