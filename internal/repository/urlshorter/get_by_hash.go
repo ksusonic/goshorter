@@ -10,7 +10,7 @@ const getByHashQuery = `select url
 						from shortened 
 						where hash_id = $1`
 
-func (u *UrlShorter) GetURLByHash(ctx context.Context, hash string) (url string, err error) {
+func (u *URLShorter) GetURLByHash(ctx context.Context, hash string) (string, error) {
 	row, err := u.db.Query(ctx, getByHashQuery, hash)
 	if err != nil {
 		return "", err
@@ -20,5 +20,6 @@ func (u *UrlShorter) GetURLByHash(ctx context.Context, hash string) (url string,
 		return "", models.ErrNotFound
 	}
 
+	var url string
 	return url, row.Scan(&url)
 }

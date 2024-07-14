@@ -1,9 +1,11 @@
-package utils
+package utils_test
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/ksusonic/goshorter/internal/utils"
 )
 
 func Test_generateShort(t *testing.T) {
@@ -22,7 +24,10 @@ func Test_generateShort(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.expected, GenerateHash(tt.url))
+			t.Parallel()
+
+			got := utils.GenerateHash(tt.url)
+			assert.Equal(t, tt.expected, got)
 		})
 	}
 }

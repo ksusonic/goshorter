@@ -35,7 +35,7 @@ func (s *Service) Shorten(c *gin.Context) {
 		return
 	}
 
-	shortUrl := s.shortURLPrefix + hash
+	shortURL := s.shortURLPrefix + hash
 
-	c.JSON(http.StatusOK, gin.H{"shortened_url": shortUrl})
+	c.JSON(http.StatusOK, gin.H{"shortened_url": shortURL})
 }

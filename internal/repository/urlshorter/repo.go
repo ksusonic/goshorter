@@ -4,10 +4,10 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type UrlShorter struct {
+type URLShorter struct {
 	db *pgxpool.Pool
 }
 
-func NewUrlShorter(pool *pgxpool.Pool) *UrlShorter {
-	return &UrlShorter{db: pool}
+func NewURLShorter(pool *pgxpool.Pool) *URLShorter {
+	return &URLShorter{db: pool}
 }

@@ -12,9 +12,11 @@ type config struct {
 	ShortURLPrefix string `env:"SHORT_URL_PREFIX" envDefault:"http://localhost:8080/"`
 }
 
-func newConfig() (cfg config) {
+func newConfig() config {
+	var cfg config
 	if err := env.Parse(&cfg); err != nil {
 		log.Fatalf("parse env: %+v", err)
 	}
-	return
+
+	return cfg
 }

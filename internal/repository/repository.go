@@ -10,7 +10,7 @@ import (
 )
 
 type Repository struct {
-	*us.UrlShorter
+	*us.URLShorter
 }
 
 func NewRepository(ctx context.Context, dsn string) (*Repository, func()) {
@@ -20,6 +20,6 @@ func NewRepository(ctx context.Context, dsn string) (*Repository, func()) {
 	}
 
 	return &Repository{
-		UrlShorter: us.NewUrlShorter(pool),
+		URLShorter: us.NewURLShorter(pool),
 	}, pool.Close
 }

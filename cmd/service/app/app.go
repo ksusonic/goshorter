@@ -15,6 +15,12 @@ import (
 	"github.com/ksusonic/goshorter/internal/service/shortener"
 )
 
+const (
+	readTimeout  = 5 * time.Second
+	WriteTimeout = 10 * time.Second
+	stopTimeout  = time.Second * 5
+)
+
 func Run() {
 	var (
 		ctx    = context.Background()
@@ -32,8 +38,8 @@ func Run() {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),
 		Handler:      r.Handler(),
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  readTimeout,
+		WriteTimeout: WriteTimeout,
 	}
 
 	go func() {
@@ -48,7 +54,7 @@ func Run() {
 	<-quit
 	log.Println("Shutdown Server ...")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
