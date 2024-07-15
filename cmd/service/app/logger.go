@@ -5,10 +5,11 @@ import (
 	"io"
 	"time"
 
-	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+	"github.com/ksusonic/ginzap"
 )
 
 func newLogger() *zap.Logger {

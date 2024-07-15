@@ -3,8 +3,8 @@ package app
 import (
 	"net/http"
 
-	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"github.com/ksusonic/ginzap"
 	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/service/shortener"
