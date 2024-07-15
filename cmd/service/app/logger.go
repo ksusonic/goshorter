@@ -23,9 +23,7 @@ func newGinZapConfig() *ginzap.Config {
 	return &ginzap.Config{
 		UTC:        true,
 		TimeFormat: time.RFC3339,
-		Skipper: func(c *gin.Context) bool {
-			return c.Request.URL.Path == ping
-		},
+		SkipPaths:  []string{ping},
 		Context: func(c *gin.Context) []zapcore.Field {
 			fields := make([]zapcore.Field, 0, len(c.Request.Header)+1)
 
@@ -48,5 +46,6 @@ func newGinZapConfig() *ginzap.Config {
 
 			return fields
 		},
+		DefaultLevel: zap.InfoLevel,
 	}
 }
