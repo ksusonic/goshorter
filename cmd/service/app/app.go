@@ -10,7 +10,6 @@ import (
 	"syscall"
 	"time"
 
-	ginzap "github.com/gin-contrib/zap"
 	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/repository"
@@ -35,10 +34,7 @@ func Run() {
 
 	shortenerService := shortener.NewService(cfg.ShortURLPrefix, repo, log)
 
-	r := setupRouter(shortenerService)
-
-	r.Use(ginzap.Ginzap(log, time.RFC3339, true))
-	r.Use(ginzap.RecoveryWithZap(log, true))
+	r := setupRouter(log, shortenerService)
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", cfg.Port),

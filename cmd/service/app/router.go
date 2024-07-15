@@ -3,7 +3,9 @@ package app
 import (
 	"net/http"
 
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 
 	"github.com/ksusonic/goshorter/internal/service/shortener"
 )
@@ -16,8 +18,11 @@ const (
 	apiShorten = "/api/shorten"
 )
 
-func setupRouter(shortenerService *shortener.Service) *gin.Engine {
-	r := gin.Default()
+func setupRouter(log *zap.Logger, shortenerService *shortener.Service) *gin.Engine {
+	r := gin.New()
+
+	r.Use(ginzap.GinzapWithConfig(log, newGinZapConfig()))
+	r.Use(ginzap.RecoveryWithZap(log, true))
 
 	r.LoadHTMLGlob("frontend/templates/*")
 	r.Static("/static", "frontend/static")
